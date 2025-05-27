@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Servlet MCQ Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --success: #4cc9f0;
+            --error: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background-color: #f5f7ff;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+        
+        .quiz-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .question {
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--dark);
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .option {
+            padding: 1rem 1.25rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e9ecef;
+            font-weight: 400;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(76, 201, 240, 0.1);
+        }
+        
+        .option.incorrect {
+            border-color: var(--error);
+            background-color: rgba(247, 37, 133, 0.1);
+        }
+        
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .correct-feedback {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: #0a9396;
+            border-left: 4px solid var(--success);
+        }
+        
+        .incorrect-feedback {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--error);
+            border-left: 4px solid var(--error);
+        }
+        
+        .theory {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+            border-left: 4px solid #0d6efd;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: var(--border-radius);
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+        }
+        
+        button:disabled {
+            background-color: #adb5bd;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+        
+        .progress-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .score-container {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            animation: fadeIn 0.5s ease;
+            display: none;
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .progress-text {
+            font-weight: 500;
+            color: var(--gray);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--dark);
+            color: white;
+            margin-top: auto;
+        }
+        
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .quiz-card {
+                padding: 1.5rem;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .quiz-card {
+                padding: 1.25rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .ads-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1rem;
+        text-align: center;
+    }
+    .ad-placeholder {
+        background: #f0f0f0;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    .ad-content {
+        margin-top: 0.5rem;
+    }
+        }
+
+        .developer-section {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .developer-info {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+    .developer-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .donation-options {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    .donate-btn {
+        background: #ff6b35;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .donate-btn:hover {
+        background: #e85925;
+    }
+
+    .code-block {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    tab-size: 4;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Java Servlet MCQ Quiz</h1>
+            <p class="subtitle">Test your knowledge of Java Servlets</p>
+        </header>
+        
+        <div class="progress-container">
+            <span class="progress-text">Question <span id="current-question">1</span> of <span id="total-questions">10</span></span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="progress-text" id="score-text">Score: 0</span>
+        </div>
+        
+        <div class="score-container" id="score-container">
+            <h3>Quiz Completed!</h3>
+            <div class="score" id="score">0</div>
+            <div id="score-message"></div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-container">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="nav-buttons">
+            <button id="prev-btn" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                Previous
+            </button>
+            <button id="next-btn">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+	atOptions = {
+		'key' : '2c13cc73776416f48552130a7d0d721f',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//racesmoulderstamp.com/2c13cc73776416f48552130a7d0d721f/invoke.js"></script>
+
+    <div class="developer-section">
+    <h3>About the Developer</h3>
+    <div class="developer-info">
+        <img src="https://i.ibb.co/XP3HcDv/2025-04-07-12-00-IMG-0921-1-2.jpg" alt="Developer" class="developer-img">
+        <div class="developer-details">
+            <p>This quiz was created by Randun Gayantha </p>
+            <p>If you found this helpful, consider supporting future development:</p>
+            <div class="donation-options">
+                
+                <button class="donate-btn" onclick="donate('buymeacoffee')">Buy Me a Coffee</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+</div>
+    
+    <footer>
+        <p class="footer-text">© 2025 Randun Labs. All rights reserved.</p>
+    </footer>
+
+    <script>
+
+        function donate(platform) {
+        // Replace with your actual donation links
+        const links = {
+            
+            buymeacoffee: 'https://buymeacoffee.com/randungayantha'
+        };
+        window.open(links[platform], '_blank');
+    }
+        // Java Servlet MCQ questions
+        const questions = [
+            {
+                question: "What is a Java Servlet?",
+                options: [
+                    "A standalone Java application",
+                    "A Java class that extends the capabilities of servers",
+                    "A JavaScript framework",
+                    "A Java compiler"
+                ],
+                correctAnswer: 1,
+                theory: "A Java Servlet is a Java class that extends the capabilities of servers that host applications accessed by means of a request-response programming model. Servlets are used to extend the functionality of web servers by generating dynamic content in response to client requests."
+            },
+            {
+                question: "Which interface must be implemented by all Servlets?",
+                options: [
+                    "ServletConfig",
+                    "ServletContext",
+                    "Servlet",
+                    "HttpServlet"
+                ],
+                correctAnswer: 2,
+                theory: "All Servlets must implement the javax.servlet.Servlet interface. This interface defines the life-cycle methods that are invoked by the servlet container to manage the servlet. While HttpServlet is commonly extended for HTTP servlets, the fundamental interface is Servlet."
+            },
+            {
+                question: "Which method is called only once in a Servlet's lifecycle?",
+                options: [
+                    "service()",
+                    "doGet()",
+                    "init()",
+                    "destroy()"
+                ],
+                correctAnswer: 2,
+                theory: "The init() method is called only once in a Servlet's lifecycle, when the Servlet is first loaded into memory. It's used for one-time initialization tasks. The service() method (or doGet()/doPost() for HTTP servlets) is called for each request, and destroy() is called when the Servlet is being taken out of service."
+            },
+            {
+                question: "Which of the following is true about the difference between GET and POST methods?",
+                options: [
+                    "GET requests can't send data to the server",
+                    "POST requests are always more secure than GET",
+                    "GET requests append data to the URL while POST sends it in the request body",
+                    "POST requests can be bookmarked while GET requests cannot"
+                ],
+                correctAnswer: 2,
+                theory: "The main difference is that GET appends data to the URL (visible in the address bar and browser history), while POST sends data in the request body. Neither method is inherently secure - security depends on implementation. POST isn't always more secure, and GET requests can be bookmarked while POST requests generally cannot."
+            },
+            {
+                question: "What is the purpose of the web.xml file in a Servlet application?",
+                options: [
+                    "It contains Java code for Servlets",
+                    "It's used to configure the Servlet container",
+                    "It defines the deployment descriptor for the web application",
+                    "It stores database connection information"
+                ],
+                correctAnswer: 2,
+                theory: "The web.xml file is the deployment descriptor for a Servlet-based web application. It contains configuration information such as Servlet declarations, Servlet mappings, initialization parameters, and other container-specific configurations. In modern Servlet 3.0+ applications, much of this can be done with annotations instead."
+            },
+            {
+                question: "Which object is used to read configuration parameters defined in web.xml?",
+                options: [
+                    "ServletContext",
+                    "HttpServletRequest",
+                    "ServletConfig",
+                    "HttpSession"
+                ],
+                correctAnswer: 2,
+                theory: "The ServletConfig object is used to read initialization parameters that are specific to a particular Servlet (defined in web.xml with <init-param> tags inside the Servlet's declaration). ServletContext is used for application-wide parameters, while HttpServletRequest handles request parameters and HttpSession manages session data."
+            },
+            {
+                question: "What is the purpose of RequestDispatcher in Servlets?",
+                options: [
+                    "To send HTTP requests to other servers",
+                    "To dispatch requests to other resources on the server (like other Servlets or JSPs)",
+                    "To manage database connections",
+                    "To configure the Servlet container"
+                ],
+                correctAnswer: 1,
+                theory: "RequestDispatcher is used to forward requests to other resources (Servlets, JSPs, or HTML files) on the same server or include their output in the response. The two main methods are forward() (transfers control completely) and include() (includes content from another resource)."
+            },
+            {
+                question: "Which of the following is true about Servlet context?",
+                options: [
+                    "There is one ServletContext per Servlet",
+                    "ServletContext is used to store session-specific data",
+                    "There is one ServletContext per web application per JVM",
+                    "ServletContext is the same as ServletConfig"
+                ],
+                correctAnswer: 2,
+                theory: "There is one ServletContext per web application per Java Virtual Machine. It represents the application's environment and is used to store application-wide data accessible to all Servlets in the application. This is different from ServletConfig (per Servlet) and HttpSession (per user session)."
+            },
+            {
+                question: "What is the purpose of the HttpSession object?",
+                options: [
+                    "To maintain database connections across requests",
+                    "To maintain user-specific state across multiple requests",
+                    "To configure the Servlet container",
+                    "To store application-wide configuration parameters"
+                ],
+                correctAnswer: 1,
+                theory: "The HttpSession object is used to maintain user-specific state across multiple HTTP requests from the same client. It allows Servlets to store and retrieve information about the user's session, typically implemented using cookies or URL rewriting to track the session ID."
+            },
+            {
+                question: "Which annotation can be used to declare a Servlet in Servlet 3.0+ without web.xml?",
+                options: [
+                    "@Servlet",
+                    "@WebServlet",
+                    "@HttpServlet",
+                    "@ServletMapping"
+                ],
+                correctAnswer: 1,
+                theory: "The @WebServlet annotation is used in Servlet 3.0 and later to declare a Servlet without needing web.xml configuration. It can specify the Servlet's name, URL patterns, initialization parameters, and other attributes directly in the Servlet class using annotations."
+            }
+        ,
+
+        
+    // ======================
+    // Servlet Fundamentals (20)
+    // ======================
+    {
+        question: "1. What is a Java Servlet?",
+        options: [
+            "A standalone Java application",
+            "A Java class that extends the capabilities of servers",
+            "A JavaScript framework",
+            "A Java compiler"
+        ],
+        correctAnswer: 1,
+        theory: "A Java Servlet is a Java class that extends the capabilities of servers that host applications accessed by means of a request-response programming model."
+    },
+    {
+        question: "2. Which interface must be implemented by all Servlets?",
+        options: [
+            "ServletConfig",
+            "ServletContext",
+            "Servlet",
+            "HttpServlet"
+        ],
+        correctAnswer: 2,
+        theory: "All Servlets must implement the javax.servlet.Servlet interface, which defines the lifecycle methods."
+    },
+    {
+        question: "3. Which method is called only once in a Servlet's lifecycle?",
+        options: [
+            "service()",
+            "doGet()",
+            "init()",
+            "destroy()"
+        ],
+        correctAnswer: 2,
+        theory: "The init() method is called only once when the Servlet is first loaded into memory."
+    },
+    {
+        question: "4. What is the purpose of the service() method?",
+        options: [
+            "To initialize the Servlet",
+            "To handle client requests",
+            "To clean up resources",
+            "To configure the Servlet"
+        ],
+        correctAnswer: 1,
+        theory: "The service() method handles client requests and dispatches them to appropriate methods like doGet() or doPost()."
+    },
+    {
+        question: "5. Which of these is NOT a Servlet lifecycle method?",
+        options: [
+            "init()",
+            "service()",
+            "destroy()",
+            "load()"
+        ],
+        correctAnswer: 3,
+        theory: "The correct lifecycle methods are init(), service(), and destroy(). There is no load() method."
+    },
+    {
+        question: "6. What is the default protocol used by HttpServlet?",
+        options: [
+            "FTP",
+            "HTTP",
+            "SMTP",
+            "TCP"
+        ],
+        correctAnswer: 1,
+        theory: "HttpServlet is specifically designed to handle HTTP protocol requests."
+    },
+    {
+        question: "7. Which package contains the Servlet classes?",
+        options: [
+            "java.servlet",
+            "javax.servlet",
+            "jakarta.servlet",
+            "Both B and C"
+        ],
+        correctAnswer: 3,
+        theory: "Servlet classes were in javax.servlet (Java EE) and moved to jakarta.servlet (Jakarta EE)."
+    },
+    {
+        question: "8. What happens if you don't override service() in your Servlet?",
+        options: [
+            "Servlet won't work",
+            "Container uses default implementation",
+            "You must implement it",
+            "Servlet throws exception"
+        ],
+        correctAnswer: 1,
+        theory: "The default service() implementation in HttpServlet dispatches to doGet(), doPost(), etc. based on request type."
+    },
+    {
+        question: "9. Which method is called when a Servlet is being taken out of service?",
+        options: [
+            "init()",
+            "destroy()",
+            "finalize()",
+            "cleanup()"
+        ],
+        correctAnswer: 1,
+        theory: "destroy() is called by the container to allow the Servlet to clean up resources."
+    },
+    {
+        question: "10. What is the purpose of ServletConfig?",
+        options: [
+            "To configure the web server",
+            "To pass initialization parameters to a Servlet",
+            "To store session data",
+            "To handle HTTP requests"
+        ],
+        correctAnswer: 1,
+        theory: "ServletConfig contains Servlet-specific initialization parameters from web.xml."
+    },
+    {
+        question: "11. Which object provides access to Servlet context parameters?",
+        options: [
+            "ServletConfig",
+            "ServletContext",
+            "HttpSession",
+            "ServletRequest"
+        ],
+        correctAnswer: 1,
+        theory: "ServletContext provides access to web application-wide parameters."
+    },
+    {
+        question: "12. What is the difference between GenericServlet and HttpServlet?",
+        options: [
+            "GenericServlet is abstract",
+            "HttpServlet extends GenericServlet for HTTP",
+            "GenericServlet is for FTP",
+            "HttpServlet is deprecated"
+        ],
+        correctAnswer: 1,
+        theory: "HttpServlet extends GenericServlet and adds HTTP-specific methods like doGet(), doPost()."
+    },
+    {
+        question: "13. When is Servlet's destroy() method called?",
+        options: [
+            "After each request",
+            "When container shuts down",
+            "When session expires",
+            "When server restarts"
+        ],
+        correctAnswer: 1,
+        theory: "destroy() is called when the Servlet container shuts down or needs to remove the Servlet."
+    },
+    {
+        question: "14. What is true about Servlet threading?",
+        options: [
+            "Each request gets a new Servlet instance",
+            "Servlets are single-threaded",
+            "Single instance handles multiple requests",
+            "Servlets cannot handle concurrent requests"
+        ],
+        correctAnswer: 2,
+        theory: "Typically one Servlet instance handles multiple requests concurrently (multi-threaded)."
+    },
+    {
+        question: "15. How can you make a Servlet thread-safe?",
+        options: [
+            "Implement SingleThreadModel",
+            "Use synchronized blocks",
+            "Both A and B",
+            "Servlets are always thread-safe"
+        ],
+        correctAnswer: 1,
+        theory: "Synchronized blocks or SingleThreadModel (though the latter is deprecated) can be used."
+    },
+    {
+        question: "16. What is SingleThreadModel?",
+        options: [
+            "A thread-safe Servlet",
+            "A deprecated interface",
+            "A synchronization technique",
+            "Both A and B"
+        ],
+        correctAnswer: 3,
+        theory: "SingleThreadModel is a deprecated interface that guaranteed one thread at a time."
+    },
+    {
+        question: "17. Which method is NOT from Servlet interface?",
+        options: [
+            "init()",
+            "service()",
+            "destroy()",
+            "doGet()"
+        ],
+        correctAnswer: 3,
+        theory: "doGet() is from HttpServlet, not the base Servlet interface."
+    },
+    {
+        question: "18. What is the purpose of ServletContext?",
+        options: [
+            "Servlet-specific configuration",
+            "Application-wide information",
+            "Request parameters",
+            "Session management"
+        ],
+        correctAnswer: 1,
+        theory: "ServletContext provides application-scoped information and resources."
+    },
+    {
+        question: "19. How many ServletContext objects exist per web app?",
+        options: [
+            "One per Servlet",
+            "One per JVM",
+            "One per session",
+            "One per request"
+        ],
+        correctAnswer: 1,
+        theory: "There's typically one ServletContext per web application per JVM."
+    },
+    {
+        question: "20. Which is true about Servlet initialization?",
+        options: [
+            "init() is called for each request",
+            "init() receives ServletConfig",
+            "init() must be public",
+            "init() returns boolean"
+        ],
+        correctAnswer: 1,
+        theory: "init(ServletConfig) is called once and receives configuration parameters."
+
+    // ======================
+    // HTTP and Requests (20)
+    // ======================
+    },
+    {
+        question: "21. What is the difference between GET and POST?",
+        options: [
+            "GET is secure, POST is not",
+            "POST has no size limits",
+            "GET appends data to URL",
+            "POST can't be bookmarked"
+        ],
+        correctAnswer: 2,
+        theory: "GET appends data to URL (visible), POST sends in request body (not visible in URL)."
+    },
+    {
+        question: "22. Which HTTP method is idempotent?",
+        options: [
+            "POST",
+            "PUT",
+            "DELETE",
+            "Both B and C"
+        ],
+        correctAnswer: 3,
+        theory: "PUT and DELETE are idempotent (multiple identical requests = same effect as one)."
+    },
+    {
+        question: "23. How to get a request parameter in Servlet?",
+        code: `String value = request.______("paramName");`,
+        options: [
+            "getAttribute()",
+            "getParameter()",
+            "getInitParameter()",
+            "getContextParameter()"
+        ],
+        correctAnswer: 1,
+        theory: "getParameter() retrieves request parameters from query string or form data."
+    },
+    {
+        question: "24. Which object represents the client request?",
+        options: [
+            "ServletResponse",
+            "ServletRequest",
+            "HttpSession",
+            "ServletConfig"
+        ],
+        correctAnswer: 1,
+        theory: "ServletRequest (or HttpServletRequest) encapsulates the client request."
+    },
+    {
+        question: "25. How to get request headers in Servlet?",
+        options: [
+            "request.getHeader()",
+            "request.getAttribute()",
+            "request.getParameter()",
+            "request.getInitParameter()"
+        ],
+        correctAnswer: 0,
+        theory: "getHeader() retrieves HTTP headers from the request."
+    },
+    {
+        question: "26. What is the correct signature for doPost()?",
+        options: [
+            "public void doPost()",
+            "protected void doPost(HttpRequest req, HttpResponse res)",
+            "protected void doPost(HttpServletRequest req, HttpServletResponse res)",
+            "private void doPost(ServletRequest req, ServletResponse res)"
+        ],
+        correctAnswer: 2,
+        theory: "Correct signature is protected void doPost(HttpServletRequest, HttpServletResponse)."
+    },
+    {
+        question: "27. How to send a redirect response?",
+        options: [
+            "response.forward()",
+            "response.sendRedirect()",
+            "response.setRedirect()",
+            "response.redirect()"
+        ],
+        correctAnswer: 1,
+        theory: "sendRedirect() sends a 302 redirect to the client."
+    },
+    {
+        question: "28. What is the purpose of RequestDispatcher?",
+        options: [
+            "Send requests to other servers",
+            "Dispatch requests to other resources",
+            "Manage database connections",
+            "Configure the container"
+        ],
+        correctAnswer: 1,
+        theory: "RequestDispatcher forwards or includes requests to other resources."
+    },
+    {
+        question: "29. What is the difference between forward and redirect?",
+        options: [
+            "Forward is client-side, redirect server-side",
+            "Redirect is client-side, forward server-side",
+            "Both are client-side",
+            "Both are server-side"
+        ],
+        correctAnswer: 1,
+        theory: "Forward happens server-side, redirect tells client to make new request."
+    },
+    {
+        question: "30. How to get the client's IP address?",
+        options: [
+            "request.getRemoteAddr()",
+            "request.getClientHost()",
+            "request.getIP()",
+            "request.getHost()"
+        ],
+        correctAnswer: 0,
+        theory: "getRemoteAddr() returns the client's IP address."
+    },
+    {
+        question: "31. Which method returns binary output stream?",
+        options: [
+            "response.getWriter()",
+            "response.getOutputStream()",
+            "response.getStream()",
+            "response.getBinaryStream()"
+        ],
+        correctAnswer: 1,
+        theory: "getOutputStream() returns a ServletOutputStream for binary data."
+    },
+    {
+        question: "32. How to set response content type?",
+        options: [
+            "response.setType()",
+            "response.setContentType()",
+            "response.setHeader('Content-Type')",
+            "Both B and C"
+        ],
+        correctAnswer: 3,
+        theory: "Both setContentType() and setHeader() can set the content type."
+    },
+    {
+        question: "33. What is the default request encoding?",
+        options: [
+            "UTF-8",
+            "ISO-8859-1",
+            "ASCII",
+            "System default"
+        ],
+        correctAnswer: 1,
+        theory: "Default is ISO-8859-1 unless set with setCharacterEncoding()."
+    },
+    {
+        question: "34. How to set request character encoding?",
+        options: [
+            "request.setEncoding()",
+            "request.setCharacterEncoding()",
+            "request.setCharset()",
+            "request.setContentEncoding()"
+        ],
+        correctAnswer: 1,
+        theory: "setCharacterEncoding() sets the encoding for request parameters."
+    },
+    {
+        question: "35. Which method gets all parameter names?",
+        options: [
+            "request.getParameterValues()",
+            "request.getParameterMap()",
+            "request.getParameterNames()",
+            "request.getAllParameters()"
+        ],
+        correctAnswer: 2,
+        theory: "getParameterNames() returns Enumeration of all parameter names."
+    },
+    {
+        question: "36. How to get multiple values for a parameter?",
+        options: [
+            "request.getParameter()",
+            "request.getParameterValues()",
+            "request.getParameters()",
+            "request.getMultiParameters()"
+        ],
+        correctAnswer: 1,
+        theory: "getParameterValues() returns String[] for multi-value params."
+    },
+    {
+        question: "37. What is true about HTTP headers?",
+        options: [
+            "Can be read but not set",
+            "Can be set but not read",
+            "Can be both read and set",
+            "Cannot be accessed"
+        ],
+        correctAnswer: 2,
+        theory: "Headers can be read (getHeader()) and set (setHeader())."
+    },
+    {
+        question: "38. Which method sets response status?",
+        options: [
+            "response.setStatus()",
+            "response.setStatusCode()",
+            "response.setResponseStatus()",
+            "response.status()"
+        ],
+        correctAnswer: 0,
+        theory: "setStatus() sets the HTTP response status code."
+    },
+    {
+        question: "39. What does sendError() do?",
+        options: [
+            "Logs an error",
+            "Sends error page to client",
+            "Throws exception",
+            "Closes connection"
+        ],
+        correctAnswer: 1,
+        theory: "sendError() sends an error response to the client."
+    },
+    {
+        question: "40. Which is NOT a standard HTTP method?",
+        options: [
+            "GET",
+            "POST",
+            "FETCH",
+            "PUT"
+        ],
+        correctAnswer: 2,
+        theory: "Standard methods are GET, POST, PUT, DELETE, HEAD, OPTIONS, TRACE."
+
+    // ======================
+    // Sessions and Cookies (15)
+    // ======================
+    },
+    {
+        question: "41. What is the purpose of HttpSession?",
+        options: [
+            "Store application-wide data",
+            "Store user-specific data across requests",
+            "Configure the Servlet",
+            "Handle database connections"
+        ],
+        correctAnswer: 1,
+        theory: "HttpSession maintains user-specific state across multiple requests."
+    },
+    {
+        question: "42. How to get session object?",
+        options: [
+            "request.getSession()",
+            "request.getHttpSession()",
+            "response.getSession()",
+            "servlet.getSession()"
+        ],
+        correctAnswer: 0,
+        theory: "request.getSession() returns the current HttpSession."
+    },
+    {
+        question: "43. What is session tracking?",
+        options: [
+            "Logging all user actions",
+            "Maintaining user state across requests",
+            "Tracking server performance",
+            "Monitoring network sessions"
+        ],
+        correctAnswer: 1,
+        theory: "Session tracking maintains state between HTTP requests from same client."
+    },
+    {
+        question: "44. Which is NOT a session tracking technique?",
+        options: [
+            "Cookies",
+            "URL rewriting",
+            "Hidden form fields",
+            "Request parameters"
+        ],
+        correctAnswer: 3,
+        theory: "Standard techniques are cookies, URL rewriting, and hidden form fields."
+    },
+    {
+        question: "45. How to invalidate a session?",
+        options: [
+            "session.close()",
+            "session.invalidate()",
+            "session.end()",
+            "session.destroy()"
+        ],
+        correctAnswer: 1,
+        theory: "invalidate() destroys the session and unbinds any objects."
+    },
+    {
+        question: "46. What is session timeout?",
+        options: [
+            "Time between requests",
+            "Maximum session duration",
+            "Inactivity period before invalidation",
+            "Network connection timeout"
+        ],
+        correctAnswer: 2,
+        theory: "Timeout is the inactive period before session is invalidated."
+    },
+    {
+        question: "47. How to set session timeout?",
+        options: [
+            "session.setTimeout()",
+            "session.setMaxInactiveInterval()",
+            "session.setExpiration()",
+            "session.setLifeTime()"
+        ],
+        correctAnswer: 1,
+        theory: "setMaxInactiveInterval() sets timeout in seconds."
+    },
+    {
+        question: "48. How to create a cookie?",
+        code: `Cookie cookie = new Cookie("name", "value");
+______.addCookie(cookie);`,
+        options: [
+            "request",
+            "response",
+            "session",
+            "servlet"
+        ],
+        correctAnswer: 1,
+        theory: "Cookies are added to the response object."
+    },
+    {
+        question: "49. How to get cookies from request?",
+        options: [
+            "request.getCookies()",
+            "request.getCookie()",
+            "request.getCookieValues()",
+            "request.getAllCookies()"
+        ],
+        correctAnswer: 0,
+        theory: "getCookies() returns array of Cookie objects."
+    },
+    {
+        question: "50. What is true about cookies?",
+        options: [
+            "Stored only in memory",
+            "Can persist beyond session",
+            "Have unlimited size",
+            "Are always secure"
+        ],
+        correctAnswer: 1,
+        theory: "Cookies can be persistent (stored on disk) with setMaxAge()."
+    },
+    {
+        question: "51. How to make cookie persistent?",
+        options: [
+            "cookie.setPersistent(true)",
+            "cookie.setMaxAge(seconds)",
+            "cookie.setExpiry(date)",
+            "cookie.setStore(true)"
+        ],
+        correctAnswer: 1,
+        theory: "setMaxAge() with positive value makes cookie persistent."
+    },
+    {
+        question: "52. What is URL rewriting?",
+        options: [
+            "Modifying URLs for SEO",
+            "Appending session ID to URLs",
+            "Redirecting URLs",
+            "Encoding URL parameters"
+        ],
+        correctAnswer: 1,
+        theory: "URL rewriting appends jsessionid to maintain sessions without cookies."
+    },
+    {
+        question: "53. How to encode URL for session tracking?",
+        options: [
+            "response.encodeURL()",
+            "request.encodeURL()",
+            "session.encodeURL()",
+            "servlet.encodeURL()"
+        ],
+        correctAnswer: 0,
+        theory: "response.encodeURL() adds session ID if cookies disabled."
+    },
+    {
+        question: "54. What is true about HttpSessionBindingListener?",
+        options: [
+            "Must be implemented by all session attributes",
+            "Notifies when bound/unbound from session",
+            "Manages session creation",
+            "Handles session timeouts"
+        ],
+        correctAnswer: 1,
+        theory: "HttpSessionBindingListener notifies objects when bound/unbound."
+    },
+    {
+        question: "55. Which method is called when session times out?",
+        options: [
+            "sessionDestroyed()",
+            "valueUnbound()",
+            "sessionTimeout()",
+            "sessionInvalidated()"
+        ],
+        correctAnswer: 0,
+        theory: "HttpSessionListener.sessionDestroyed() is called on timeout."
+
+    // ======================
+    // Filters and Listeners (15)
+    // ======================
+    },
+    {
+        question: "56. What is a Filter in Java EE?",
+        options: [
+            "A Servlet that filters content",
+            "A component that pre/post processes requests",
+            "A database filter",
+            "A JSP tag"
+        ],
+        correctAnswer: 1,
+        theory: "Filters intercept requests/responses for pre/post processing."
+    },
+    {
+        question: "57. Which interface must a Filter implement?",
+        options: [
+            "Filter",
+            "ServletFilter",
+            "HttpFilter",
+            "RequestFilter"
+        ],
+        correctAnswer: 0,
+        theory: "Filters must implement javax.servlet.Filter interface."
+    },
+    {
+        question: "58. What is the correct Filter method order?",
+        options: [
+            "init() → doFilter() → destroy()",
+            "doFilter() → init() → destroy()",
+            "init() → service() → destroy()",
+            "start() → filter() → end()"
+        ],
+        correctAnswer: 0,
+        theory: "Filter lifecycle: init(), doFilter() for each request, destroy()."
+    },
+    {
+        question: "59. How to configure a Filter?",
+        options: [
+            "Only in web.xml",
+            "Only with @WebFilter",
+            "Either web.xml or @WebFilter",
+            "In servlet code"
+        ],
+        correctAnswer: 2,
+        theory: "Filters can be configured in web.xml or with @WebFilter annotation."
+    },
+    {
+        question: "60. What is FilterChain?",
+        options: [
+            "List of all Filters",
+            "Mechanism to invoke next Filter/Servlet",
+            "Filter configuration",
+            "Filter lifecycle"
+        ],
+        correctAnswer: 1,
+        theory: "FilterChain invokes the next Filter or target Servlet."
+    },
+    {
+        question: "61. Which is NOT a standard Servlet listener?",
+        options: [
+            "ServletContextListener",
+            "HttpSessionListener",
+            "ServletRequestListener",
+            "ServletConfigListener"
+        ],
+        correctAnswer: 3,
+        theory: "Standard listeners include Context, Session, and Request listeners."
+    },
+    {
+        question: "62. When is contextInitialized() called?",
+        options: [
+            "For each request",
+            "When Servlet is initialized",
+            "When web app starts",
+            "When session starts"
+        ],
+        correctAnswer: 2,
+        theory: "ServletContextListener.contextInitialized() called at web app startup."
+    },
+    {
+        question: "63. What is a use case for Filters?",
+        options: [
+            "Authentication",
+            "Logging",
+            "Compression",
+            "All of the above"
+        ],
+        correctAnswer: 3,
+        theory: "Filters are commonly used for all these cross-cutting concerns."
+    },
+    {
+        question: "64. How to get ServletContext in a listener?",
+        options: [
+            "event.getContext()",
+            "event.getServletContext()",
+            "event.getApplicationContext()",
+            "event.getWebContext()"
+        ],
+        correctAnswer: 1,
+        theory: "ServletContextEvent.getServletContext() returns the context."
+    },
+    {
+        question: "65. Which listener tracks session creation?",
+        options: [
+            "ServletContextListener",
+            "HttpSessionListener",
+            "ServletRequestListener",
+            "HttpSessionAttributeListener"
+        ],
+        correctAnswer: 1,
+        theory: "HttpSessionListener tracks session creation/destruction."
+    },
+    {
+        question: "66. What is true about Filter configuration?",
+        options: [
+            "Filters can have init parameters",
+            "Filters can map to URL patterns",
+            "Filters can have a specific order",
+            "All of the above"
+        ],
+        correctAnswer: 3,
+        theory: "Filters support all these configuration options."
+    },
+    {
+        question: "67. When is requestInitialized() called?",
+        options: [
+            "Before request processing",
+            "After request processing",
+            "During request processing",
+            "When request is created"
+        ],
+        correctAnswer: 0,
+        theory: "ServletRequestListener.requestInitialized() called before processing."
+    },
+    {
+        question: "68. Which annotation declares a Filter?",
+        options: [
+            "@ServletFilter",
+            "@WebFilter",
+            "@Filter",
+            "@HttpFilter"
+        ],
+        correctAnswer: 1,
+        theory: "@WebFilter declares a Filter in Servlet 3.0+."
+    },
+    {
+        question: "69. What is AsyncListener used for?",
+        options: [
+            "Asynchronous Filtering",
+            "Asynchronous Servlet events",
+            "Background processing",
+            "Thread pooling"
+        ],
+        correctAnswer: 1,
+        theory: "AsyncListener handles async Servlet operation events."
+    },
+    {
+        question: "70. How to make a Servlet asynchronous?",
+        options: [
+            "@WebServlet(async=true)",
+            "request.startAsync()",
+            "response.enableAsync()",
+            "servlet.setAsync(true)"
+        ],
+        correctAnswer: 1,
+        theory: "request.startAsync() puts Servlet in async mode."
+
+    // ======================
+    // Advanced Topics (15)
+    // ======================
+    },
+    {
+        question: "71. What is the purpose of @MultipartConfig?",
+        options: [
+            "Handle multiple requests",
+            "Handle file uploads",
+            "Configure multiple Servlets",
+            "Enable multipart responses"
+        ],
+        correctAnswer: 1,
+        theory: "@MultipartConfig enables Servlet to handle multipart/form-data (file uploads)."
+    },
+    {
+        question: "72. How to get uploaded file in Servlet?",
+        options: [
+            "request.getFile()",
+            "request.getPart()",
+            "request.getUpload()",
+            "request.getMultipart()"
+        ],
+        correctAnswer: 1,
+        theory: "getPart() gets an uploaded file part with @MultipartConfig."
+    },
+    {
+        question: "73. What is Servlet chaining?",
+        options: [
+            "Multiple Servlets handling one request",
+            "Servlets calling each other",
+            "Filters calling Servlets",
+            "Servlet inheritance"
+        ],
+        correctAnswer: 0,
+        theory: "Servlet chaining has multiple Servlets process a single request."
+    },
+    {
+        question: "74. What is the purpose of load-on-startup?",
+        options: [
+            "Load Servlet at web app startup",
+            "Preload Servlet on server start",
+            "Load Servlet on first request",
+            "Reload Servlet when modified"
+        ],
+        correctAnswer: 0,
+        theory: "load-on-startup in web.xml loads Servlet during web app initialization."
+    },
+    {
+        question: "75. What is true about WAR files?",
+        options: [
+            "Contain compiled Servlets",
+            "Are deployed to Servlet containers",
+            "Have specific directory structure",
+            "All of the above"
+        ],
+        correctAnswer: 3,
+        theory: "WAR files contain web apps with Servlets and follow standard structure."
+    },
+    {
+        question: "76. Where are Servlet temporary files stored?",
+        options: [
+            "ServletContext temp directory",
+            "System temp directory",
+            "WEB-INF/temp",
+            "Specified in web.xml"
+        ],
+        correctAnswer: 0,
+        theory: "ServletContext.getAttribute('javax.servlet.context.tempdir') provides temp storage."
+    },
+    {
+        question: "77. What is the purpose of JSP?",
+        options: [
+            "Java Servlet Pages",
+            "Java Server Pages",
+            "JavaScript Pages",
+            "JSON Service Pages"
+        ],
+        correctAnswer: 1,
+        theory: "JSP (JavaServer Pages) provide dynamic web content and compile to Servlets."
+    },
+    {
+        question: "78. What is a Servlet container?",
+        options: [
+            "A type of Servlet",
+            "A web server extension",
+            "A runtime for Servlets",
+            "A configuration file"
+        ],
+        correctAnswer: 2,
+        theory: "Servlet containers (like Tomcat) manage Servlet lifecycle and requests."
+    },
+    {
+        question: "79. What is the latest Servlet specification?",
+        options: [
+            "Servlet 4.0",
+            "Servlet 5.0",
+            "Servlet 6.0",
+            "Jakarta Servlet 6.0"
+        ],
+        correctAnswer: 3,
+        theory: "Jakarta Servlet 6.0 is the latest (formerly Java/Jakarta EE)."
+    },
+    {
+        question: "80. What is the purpose of welcome-file-list?",
+        options: [
+            "List of Servlets",
+            "Default files for directory requests",
+            "List of welcome messages",
+            "Login files"
+        ],
+        correctAnswer: 1,
+        theory: "welcome-file-list in web.xml specifies default files for directories."
+    },
+    {
+        question: "81. How to make a Servlet thread-safe?",
+        options: [
+            "Implement SingleThreadModel",
+            "Use synchronized blocks",
+            "Avoid instance variables",
+            "Both B and C"
+        ],
+        correctAnswer: 3,
+        theory: "Synchronization and avoiding shared state make Servlets thread-safe."
+    },
+    {
+        question: "82. What is the purpose of error-page in web.xml?",
+        options: [
+            "Define custom error pages",
+            "Log errors",
+            "Configure error handling",
+            "Both A and C"
+        ],
+        correctAnswer: 3,
+        theory: "error-page maps error codes/exceptions to custom pages."
+    },
+    {
+        question: "83. What is a Servlet context attribute?",
+        options: [
+            "Application-wide shared object",
+            "Servlet configuration",
+            "Request parameter",
+            "Session variable"
+        ],
+        correctAnswer: 0,
+        theory: "Context attributes are shared across the entire web application."
+    },
+    {
+        question: "84. How to programmatically add a Servlet?",
+        options: [
+            "ServletContext.addServlet()",
+            "ServletContainer.addServlet()",
+            "Dynamic.addServlet()",
+            "ServletRegistration.addServlet()"
+        ],
+        correctAnswer: 0,
+        theory: "ServletContext.addServlet() in Servlet 3.0+ allows programmatic registration."
+    },
+    {
+        question: "85. What is the purpose of META-INF/context.xml?",
+        options: [
+            "Servlet configuration",
+            "Container-specific configuration",
+            "Application metadata",
+            "Security constraints"
+        ],
+        correctAnswer: 1,
+        theory: "context.xml contains Tomcat-specific configuration for the web app."
+
+    // ======================
+    // Security (15)
+    // ======================
+    },
+    {
+        question: "86. What is BASIC authentication?",
+        options: [
+            "Simple username/password in header",
+            "HTML form login",
+            "Certificate-based",
+            "OAuth token"
+        ],
+        correctAnswer: 0,
+        theory: "BASIC auth sends base64-encoded username:password in Authorization header."
+    },
+    {
+        question: "87. How to enforce security constraints?",
+        options: [
+            "web.xml security-constraint",
+            "@ServletSecurity",
+            "Programmatic security",
+            "All of the above"
+        ],
+        correctAnswer: 3,
+        theory: "Security can be configured declaratively or programmatically."
+    },
+    {
+        question: "88. What is FORM authentication?",
+        options: [
+            "Custom HTML login form",
+            "Browser dialog",
+            "Certificate popup",
+            "OAuth redirect"
+        ],
+        correctAnswer: 0,
+        theory: "FORM auth uses custom HTML form for login."
+    },
+    {
+        question: "89. Which role represents all users?",
+        options: [
+            "*",
+            "all",
+            "ANYONE",
+            "**"
+        ],
+        correctAnswer: 0,
+        theory: "The '*' role in security constraints matches all authenticated users."
+    },
+    {
+        question: "90. How to get user principal?",
+        options: [
+            "request.getUserPrincipal()",
+            "session.getPrincipal()",
+            "servlet.getUser()",
+            "context.getUser()"
+        ],
+        correctAnswer: 0,
+        theory: "request.getUserPrincipal() returns the authenticated user."
+    },
+    {
+        question: "91. What is DIGEST authentication?",
+        options: [
+            "Hashed password transmission",
+            "Plaintext password",
+            "Certificate-based",
+            "Token-based"
+        ],
+        correctAnswer: 0,
+        theory: "DIGEST auth uses hashing for more secure password transmission."
+    },
+    {
+        question: "92. How to check user role?",
+        options: [
+            "request.isUserInRole()",
+            "session.checkRole()",
+            "servlet.verifyRole()",
+            "context.hasRole()"
+        ],
+        correctAnswer: 0,
+        theory: "request.isUserInRole() checks if user has specified role."
+    },
+    {
+        question: "93. What is CLIENT-CERT authentication?",
+        options: [
+            "Username/password",
+            "Digital certificates",
+            "Security tokens",
+            "Biometrics"
+        ],
+        correctAnswer: 1,
+        theory: "CLIENT-CERT uses X.509 certificates for authentication."
+    },
+    {
+        question: "94. Where are users/roles defined?",
+        options: [
+            "web.xml",
+            "Servlet code",
+            "Container-specific realm",
+            "Database"
+        ],
+        correctAnswer: 2,
+        theory: "Users/roles are defined in container's realm (file, DB, LDAP, etc.)."
+    },
+    {
+        question: "95. What is @ServletSecurity used for?",
+        options: [
+            "Declarative security",
+            "Programmatic security",
+            "Encryption",
+            "Authentication"
+        ],
+        correctAnswer: 0,
+        theory: "@ServletSecurity provides declarative security annotations."
+    },
+    {
+        question: "96. How to programmatically login?",
+        options: [
+            "request.login()",
+            "servlet.authenticate()",
+            "context.login()",
+            "session.login()"
+        ],
+        correctAnswer: 0,
+        theory: "request.login(username,password) for programmatic auth."
+    },
+    {
+        question: "97. What is transport-guarantee?",
+        options: [
+            "Requires SSL/TLS",
+            "Ensures message delivery",
+            "Guarantees performance",
+            "Validates data integrity"
+        ],
+        correctAnswer: 0,
+        theory: "transport-guarantee CONFIDENTIAL requires SSL/TLS."
+    },
+    {
+        question: "98. How to get authenticated username?",
+        options: [
+            "request.getRemoteUser()",
+            "session.getUser()",
+            "servlet.getUsername()",
+            "context.getUser()"
+        ],
+        correctAnswer: 0,
+        theory: "request.getRemoteUser() returns authenticated username."
+    },
+    {
+        question: "99. What is security-role-ref?",
+        options: [
+            "Maps application roles to container roles",
+            "Defines security constraints",
+            "References external security",
+            "Configures authentication"
+        ],
+        correctAnswer: 0,
+        theory: "security-role-ref maps application role names to container roles."
+    },
+    {
+        question: "100. How to configure logout?",
+        options: [
+            "request.logout()",
+            "session.invalidate()",
+            "Both A and B",
+            "web.xml logout element"
+        ],
+        correctAnswer: 2,
+        theory: "Both request.logout() and session.invalidate() are used for logout."
+    }
+];
+
+        // Shuffle questions array using Fisher-Yates algorithm
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Shuffle the questions and their options
+        const shuffledQuestions = shuffleArray([...questions]).map(q => {
+            const options = [...q.options];
+            const correctAnswer = options[q.correctAnswer];
+            shuffleArray(options);
+            return {
+                ...q,
+                options,
+                correctAnswer: options.indexOf(correctAnswer)
+            };
+        });
+
+        // Quiz state variables
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(shuffledQuestions.length).fill(null);
+        let quizCompleted = false;
+
+        // DOM elements
+        const quizContainer = document.getElementById('quiz-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const scoreContainer = document.getElementById('score-container');
+        const scoreSpan = document.getElementById('score');
+        const scoreMessage = document.getElementById('score-message');
+        const progressFill = document.getElementById('progress-fill');
+        const scoreText = document.getElementById('score-text');
+
+        // Initialize the quiz
+        function initQuiz() {
+            totalQuestionsSpan.textContent = shuffledQuestions.length;
+            updateProgress();
+            showQuestion(currentQuestionIndex);
+            updateNavButtons();
+        }
+
+        // Display a question
+        function showQuestion(index) {
+            const question = shuffledQuestions[index];
+            currentQuestionSpan.textContent = index + 1;
+            
+            let optionsHtml = '';
+            question.options.forEach((option, i) => {
+                let optionClass = 'option';
+                if (userAnswers[index] !== null) {
+                    if (i === question.correctAnswer) {
+                        optionClass += ' correct';
+                    } else if (userAnswers[index] === i) {
+                        optionClass += ' incorrect';
+                    }
+                } else if (userAnswers[index] === i) {
+                    optionClass += ' selected';
+                }
+                
+                optionsHtml += `
+                    <div class="${optionClass}" data-index="${i}" onclick="selectOption(${index}, ${i})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            let feedbackHtml = '';
+            let theoryHtml = '';
+            if (userAnswers[index] !== null) {
+                const isCorrect = userAnswers[index] === question.correctAnswer;
+                feedbackHtml = `
+                    <div class="feedback ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}">
+                        ${isCorrect ? '✅ Correct!' : `❌ Incorrect. The correct answer is: ${question.options[question.correctAnswer]}`}
+                    </div>
+                    <div class="theory">
+                        <strong>Explanation:</strong> ${question.theory}
+                    </div>
+                `;
+            }
+            
+            quizContainer.innerHTML = `
+                <div class="question">${question.question}</div>
+                <div class="options">${optionsHtml}</div>
+                ${feedbackHtml}
+                ${theoryHtml}
+            `;
+        }
+
+        // Select an option
+        function selectOption(questionIndex, optionIndex) {
+            if (quizCompleted || userAnswers[questionIndex] !== null) return;
+            
+            userAnswers[questionIndex] = optionIndex;
+            if (optionIndex === shuffledQuestions[questionIndex].correctAnswer) {
+                score++;
+                scoreText.textContent = `Score: ${score}`;
+            }
+            
+            showQuestion(questionIndex);
+            updateNavButtons();
+            updateProgress();
+        }
+
+        // Update navigation buttons
+        function updateNavButtons() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            if (quizCompleted) {
+                nextBtn.textContent = 'Restart Quiz';
+                nextBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                    Restart Quiz
+                `;
+            } else if (currentQuestionIndex === shuffledQuestions.length - 1) {
+                nextBtn.textContent = 'Finish Quiz';
+                nextBtn.innerHTML = `
+                    Finish Quiz
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                    </svg>
+                `;
+            } else {
+                nextBtn.textContent = 'Next';
+                nextBtn.innerHTML = `
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                `;
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(ans => ans !== null).length;
+            const progressPercent = (answeredCount / shuffledQuestions.length) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+            scoreText.textContent = `Score: ${score}`;
+        }
+
+        // Show final score
+        function showFinalScore() {
+            scoreSpan.textContent = `${score}/${shuffledQuestions.length}`;
+            
+            let message = "";
+            const percentage = (score / shuffledQuestions.length) * 100;
+            
+            if (percentage >= 80) {
+                message = "Excellent! You have a strong understanding of Java Servlets.";
+            } else if (percentage >= 60) {
+                message = "Good job! You have a decent understanding, but there's room for improvement.";
+            } else if (percentage >= 40) {
+                message = "Not bad! Consider reviewing some Servlet concepts.";
+            } else {
+                message = "Keep practicing! Review the Servlet fundamentals and try again.";
+            }
+            
+            scoreMessage.textContent = message;
+            scoreContainer.style.display = 'block';
+        }
+
+        // Go to next question
+        function nextQuestion() {
+            if (quizCompleted) {
+                // Restart quiz
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = new Array(shuffledQuestions.length).fill(null);
+                quizCompleted = false;
+                scoreContainer.style.display = 'none';
+                showQuestion(currentQuestionIndex);
+                updateNavButtons();
+                updateProgress();
+                return;
+            }
+            
+            if (currentQuestionIndex < shuffledQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                // Finish quiz
+                quizCompleted = true;
+                showFinalScore();
+            }
+            updateNavButtons();
+        }
+
+        // Go to previous question
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateNavButtons();
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextQuestion);
+        prevBtn.addEventListener('click', prevQuestion);
+
+        // Global functions
+        window.selectOption = selectOption;
+
+        // Start the quiz
+        initQuiz();
+    </script>
+</body>
+</html>
